@@ -24,6 +24,9 @@ pub fn is_number (ch: char) -> bool {
 pub fn is_whitespace (ch: char) -> bool {
     WHITESPACE_CHARS.contains(&ch)
 }
+pub fn is_keyword (kw: &String) -> bool {
+    KEYWORDS.contains(&&kw[..])
+}
 pub fn is_keyword_char (ch: char) -> bool {
     // Includes the / for /dev/null
     ch.is_ascii_alphanumeric() || ch == '/'

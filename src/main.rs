@@ -7,7 +7,7 @@ fn main() {
     let code = "
         lol iz 1
         wtf lool iz liek 2
-            rofl loool
+            rofl gay loool
         brb
     ".to_string();
 

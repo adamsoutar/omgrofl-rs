@@ -27,11 +27,11 @@ impl Tokeniser {
                 // This is a variable (eg. lol)
                 self.read_variable()
             } else if is_number(ch) {
-                self.read_number()
+                self.read_number(ch)
             } else {
                 // Everything that isn't a var or a number is a keyword
                 // (or a syntax error)
-                self.read_keyword()
+                self.read_keyword(ch)
             };
 
         self.skip_whitespace();
@@ -40,14 +40,14 @@ impl Tokeniser {
     }
 
     fn skip_whitespace (&mut self) {
-        while is_whitespace(self.source.peek()) {
+        while !self.source.eof && is_whitespace(self.source.peek()) {
             self.source.read();
         }
     }
 
     fn read_variable (&mut self) -> Token {
         let mut count = 0;
-        while self.source.peek() == 'o' {
+        while !self.source.eof && self.source.peek() == 'o' {
             self.source.read();
             count += 1;
         }
@@ -56,9 +56,10 @@ impl Tokeniser {
         Token::Variable(count)
     }
 
-    fn read_number (&mut self) -> Token {
+    fn read_number (&mut self, first: char) -> Token {
         let mut res = String::new();
-        while is_number(self.source.peek()) {
+        res.push(first);
+        while !self.source.eof && is_number(self.source.peek()) {
             res.push(self.source.read())
         }
 
@@ -71,11 +72,21 @@ impl Tokeniser {
         Token::Number(n.unwrap())
     }
 
-    fn read_keyword (&mut self) -> Token {
+    fn read_keyword (&mut self, first: char) -> Token {
         let mut res = String::new();
-        while is_keyword_char(self.source.peek()) {
+        res.push(first);
+        while !self.source.eof && is_keyword_char(self.source.peek()) {
             res.push(self.source.read())
         }
+
+        if !is_keyword(&res) {
+            self.croak(format!(
+                "Invalid syntax \"{}\", expected a keyword, number or variable name.",
+                res
+            ));
+        }
+
+        // TODO: w00t keyword for comments
         Token::Keyword(res)
     }
 
@@ -83,7 +94,8 @@ impl Tokeniser {
         self.source.croak(msg);
     }
 
-    pub fn new (source: CharStream) -> Tokeniser {
+    pub fn new (srcString: String) -> Tokeniser {
+        let source = CharStream::new(srcString);
         Tokeniser {
             source,
             current: Token::NullToken,
