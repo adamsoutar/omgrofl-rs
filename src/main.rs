@@ -5,7 +5,12 @@ use crate::parser::char_stream::CharStream;
 use crate::parser::tokeniser_utils::stringify_token;
 
 fn main() {
-    let code = "lol iz 1".to_string();
+    let code = "
+lol iz 1
+wtf lol iz liek 1
+
+brb
+".to_string();
 
     // let mut tokens = Tokeniser::new(code);
     //

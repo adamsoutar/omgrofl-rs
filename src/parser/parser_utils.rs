@@ -5,15 +5,22 @@ pub enum ASTNode {
     IfDeclaration(ASTIfDeclaration),
     WhileLoopDeclaration(ASTWhileLoopDeclaration),
     ForLoopDeclaration(ASTForLoopDeclaration),
-    ArglessStatement(String),
+    ArglessStatement(Statement),
     StatementWithArg(ASTStatementWithArg)
 }
 
+#[derive(PartialEq)]
 pub enum Operator {
     Uber,
     NopeUber,
     Liek,
     NopeLiek
+}
+
+pub enum Statement {
+    Brb,
+    Rofl,
+    Lmao
 }
 
 pub struct ASTVariableDeclaration {
@@ -39,6 +46,6 @@ pub struct ASTForLoopDeclaration {
 }
 
 pub struct ASTStatementWithArg {
-    pub statement: String,
+    pub statement: Statement,
     pub arg: Box<ASTNode>
 }

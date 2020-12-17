@@ -15,7 +15,58 @@ impl Parser {
                 let vid = var_id.clone();
                 self.read_variable_definition(vid)
             },
+            Token::Keyword(keyword) => {
+                let kw = keyword.clone();
+                self.read_keyword(&kw)
+            },
             _ => panic!("Unexpected token: {}", stringify_token(tk))
+        }
+    }
+
+    fn read_keyword (&mut self, keyword: &String) -> ASTNode {
+        match &keyword[..] {
+            "wtf" => {
+                let left = Box::new(self.read_value_atom());
+                self.expect_keyword("iz");
+                let operator = self.read_operator();
+                let right = Box::new(self.read_value_atom());
+                ASTNode::IfDeclaration(
+                    ASTIfDeclaration {
+                        left, operator, right
+                    }
+                )
+            },
+            "brb" => ASTNode::ArglessStatement(Statement::Brb),
+            "rofl" => ASTNode::StatementWithArg(ASTStatementWithArg {
+                statement: Statement::Rofl,
+                arg: Box::new(self.read_value_atom())
+            }),
+            "lmao" => ASTNode::StatementWithArg(ASTStatementWithArg {
+                statement: Statement::Lmao,
+                arg: Box::new(self.read_value_atom())
+            }),
+            _ => unimplemented!("Keyword \"{}\"", keyword)
+        }
+    }
+
+    fn read_operator (&mut self) -> Operator {
+        let tk = self.source.read();
+        if let Token::Keyword(kw) = tk {
+            match &kw[..] {
+                "uber" => Operator::Uber,
+                "liek" => Operator::Liek,
+                "nope" => {
+                    let op2 = self.read_operator();
+                    if op2 == Operator::Uber {
+                        Operator::NopeUber
+                    } else {
+                        Operator::NopeLiek
+                    }
+                },
+                _ => panic!("Expected an operator but got \"{}\"", kw)
+            }
+        } else {
+            panic!("Expected an operator but didn't get one")
         }
     }
 
