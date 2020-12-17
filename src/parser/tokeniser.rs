@@ -94,8 +94,8 @@ impl Tokeniser {
         self.source.croak(msg);
     }
 
-    pub fn new (srcString: String) -> Tokeniser {
-        let source = CharStream::new(srcString);
+    pub fn new (src_string: String) -> Tokeniser {
+        let source = CharStream::new(src_string);
         Tokeniser {
             source,
             current: Token::NullToken,
