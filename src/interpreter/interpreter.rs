@@ -71,6 +71,36 @@ impl Interpreter {
         }
     }
 
+    fn run_statement_with_arg (&mut self, stmt_with_arg: &ASTStatementWithArg) -> BlockDecision {
+        let arg_val = self.get_value(&stmt_with_arg.arg);
+
+        let mut arg_was_a_var = true;
+        let arg_as_var_id = match *stmt_with_arg.arg {
+            ASTNode::Variable(var_id) => var_id,
+            _ => { arg_was_a_var = false; 0 }
+        };
+
+        let want_a_var = |for_stmt: &str| {
+            if !arg_was_a_var {
+                self.croak(format!("{} wants a variable as an arg", for_stmt))
+            }
+        };
+
+        match stmt_with_arg.statement {
+            Statement::Lmao => {
+                want_a_var("lmao");
+                self.vars.inc(arg_as_var_id);
+                BlockDecision::None
+            },
+            Statement::Roflmao => {
+                want_a_var("roflmao");
+                self.vars.dec(arg_as_var_id);
+                BlockDecision::None
+            }
+            _ => unimplemented!("Statement with arg")
+        }
+    }
+
     fn run_block (&mut self, body: &Vec<ASTNode>) -> BlockDecision {
         for node in body {
             let bd = match node {
@@ -78,6 +108,7 @@ impl Interpreter {
                 ASTNode::IfDeclaration(if_stmt) => self.run_if_statement(if_stmt),
                 ASTNode::ForLoopDeclaration(for_loop) => self.run_for_loop(for_loop),
                 ASTNode::ArglessStatement(stmt) => self.run_argless_statement(stmt),
+                ASTNode::StatementWithArg(stmt_with_arg) => self.run_statement_with_arg(stmt_with_arg),
                 _ => unimplemented!("AST node")
             };
 

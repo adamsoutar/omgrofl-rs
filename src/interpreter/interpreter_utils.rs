@@ -3,7 +3,8 @@ use crate::parser::parser_utils::*;
 #[derive(PartialEq)]
 pub enum BlockDecision {
     None,
-    Break
+    Break,
+    Exit // Used by "stfu" to instantly quit
 }
 
 pub fn test_values (left: u8, operator: &Operator, right: u8) -> bool {
