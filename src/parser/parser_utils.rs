@@ -18,7 +18,6 @@ pub enum Operator {
 }
 
 pub enum Statement {
-    Brb,
     Rofl,
     Lmao,
     Rtfm,

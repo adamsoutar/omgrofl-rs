@@ -1,6 +1,8 @@
 use crate::parser::tokeniser::Tokeniser;
 use crate::parser::tokeniser_utils::*;
 use crate::parser::parser_utils::*;
+#[allow(unused_imports)]
+use crate::parser::tokeniser_debug::*;
 
 pub struct Parser {
     pub source: Tokeniser
@@ -20,13 +22,19 @@ impl Parser {
                 self.read_keyword(&kw)
             },
             Token::Number(n) => {
-                if *n == 4 {
+                if n == 4 {
                     self.read_for_loop()
                 } else {
-                    panic!("Unexpected non-4 number: {}", n);
+                    let nc = n.clone();
+                    self.croak(format!("Unexpected non-4 number: {}", nc));
+                    unreachable!();
                 }
             }
-            _ => panic!("Unexpected token: {}", stringify_token(tk))
+            _ => {
+                let st = stringify_token(&tk);
+                self.croak(format!("Unexpected token: {}", st));
+                unreachable!();
+            }
         }
     }
 
@@ -44,7 +52,6 @@ impl Parser {
                     }
                 )
             },
-            "brb" => ASTNode::ArglessStatement(Statement::Brb),
             "rtfm" => ASTNode::ArglessStatement(Statement::Rtfm),
             "tldr" => ASTNode::ArglessStatement(Statement::Tldr),
             "rofl" => self.stmt_with_value(Statement::Rofl),
@@ -79,18 +86,22 @@ impl Parser {
     fn expect_number (&mut self, check_n: u8) {
         match self.source.read() {
             Token::Number(n) => {
-                if *n != check_n {
-                    panic!("Expected number {} but got number {}", check_n, n);
+                if n != check_n {
+                    let nc = n.clone();
+                    self.croak(format!("Expected number {} but got number {}", check_n, nc));
                 }
             },
-            _ => panic!("Expected number {} but got a diff. token", check_n)
+            _ => self.croak(format!("Expected number {} but got a diff. token", check_n))
         }
     }
 
     fn expect_variable (&mut self) -> usize {
         match self.source.read() {
             Token::Variable(var_id) => var_id.clone(),
-            _ => panic!("Expected a variable but got a diff. token")
+            _ => {
+                self.croak(format!("Expected a variable but got a diff. token"));
+                unreachable!();
+            }
         }
     }
 
@@ -108,10 +119,16 @@ impl Parser {
                         Operator::NopeLiek
                     }
                 },
-                _ => panic!("Expected an operator but got \"{}\"", kw)
+                _ => {
+                    let kwc = kw.clone();
+                    self.croak(format!("Expected an operator but got \"{}\"", kwc));
+                    // Compiler is not smart enough to tell self.croak always panics
+                    unreachable!();
+                }
             }
         } else {
-            panic!("Expected an operator but didn't get one")
+            self.croak(format!("Expected an operator but didn't get one"));
+            unreachable!();
         }
     }
 
@@ -130,7 +147,7 @@ impl Parser {
         match tk {
             Token::Number(n) => ASTNode::Number(n.clone()),
             Token::Variable(var_id) => ASTNode::Variable(var_id.clone()),
-            _ => panic!("Expected a value, got {}", stringify_token(tk))
+            _ => panic!("Expected a value, got {}", stringify_token(&tk))
         }
     }
 
@@ -138,13 +155,18 @@ impl Parser {
         let tk = self.source.read();
 
         let matches = match tk {
-            Token::Keyword(word) => *word == keyword.to_string(),
+            Token::Keyword(ref word) => *word == keyword.to_string(),
             _ => false
         };
 
         if !matches {
-            panic!("Expected keyword \"{}\", got {}", keyword, stringify_token(tk))
+            let st = stringify_token(&tk);
+            self.croak(format!("Expected keyword \"{}\", got {}", keyword, st))
         }
+    }
+
+    fn croak(&self, msg: String) {
+        self.source.croak(msg)
     }
 
     pub fn read_block (&mut self) -> Vec<ASTNode> {

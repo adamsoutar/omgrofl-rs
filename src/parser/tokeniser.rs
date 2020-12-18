@@ -1,5 +1,6 @@
 use crate::parser::char_stream::CharStream;
 use crate::parser::tokeniser_utils::*;
+#[allow(unused_imports)]
 use crate::parser::tokeniser_debug::*;
 
 pub struct Tokeniser {
@@ -13,9 +14,14 @@ impl Tokeniser {
         &self.current
     }
 
-    pub fn read (&mut self) -> &Token {
-        self.current = self.read_next();
-        &self.current
+    pub fn read (&mut self) -> Token {
+        let tk = self.current.clone();
+        self.current = if self.eof {
+            Token::NullToken
+        } else {
+            self.read_next()
+        };
+        tk
     }
 
     fn read_next (&mut self) -> Token {
@@ -93,16 +99,18 @@ impl Tokeniser {
         Token::Keyword(res)
     }
 
-    fn croak (&self, msg: String) {
+    pub fn croak (&self, msg: String) {
         self.source.croak(msg);
     }
 
     pub fn new (src_string: String) -> Tokeniser {
         let source = CharStream::new(src_string);
-        Tokeniser {
+        let mut new_tk = Tokeniser {
             source,
             current: Token::NullToken,
             eof: false
-        }
+        };
+        new_tk.read();
+        new_tk
     }
 }

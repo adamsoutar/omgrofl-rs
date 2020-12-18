@@ -1,3 +1,4 @@
+#[derive(Clone)]
 pub enum Token {
     NullToken, // Only used for placeholders in a few places
     Keyword(String),

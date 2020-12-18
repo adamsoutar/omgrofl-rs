@@ -26,6 +26,8 @@ fn print_ast_node (node: &ASTNode, indent: usize) {
             print_at_depth(format!("Operator: {}", get_operator_string(&if_stmt.operator)), indent + 1);
             print_at_depth("Right:".to_string(), indent + 1);
             print_ast_node(&if_stmt.right, indent + 2);
+            print_at_depth("Body:".to_string(), indent + 1);
+            print_block(&if_stmt.body, indent + 2);
         },
         ASTNode::ForLoopDeclaration(for_loop) => {
             print_at_depth(format!("For loop, counter: Var #{}", for_loop.var_id), indent);
@@ -51,7 +53,6 @@ fn get_operator_string(op: &Operator) -> &str {
 
 fn get_statement_string(stmt: &Statement) -> &str {
     match stmt {
-        Statement::Brb => "brb",
         Statement::Rofl => "rofl",
         Statement::Lmao => "lmao",
         Statement::Rtfm => "rtfm",
