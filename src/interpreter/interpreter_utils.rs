@@ -6,7 +6,7 @@ pub enum BlockDecision {
     Break
 }
 
-pub fn test_values (left: u8, operator: Operator, right: u8) -> bool {
+pub fn test_values (left: u8, operator: &Operator, right: u8) -> bool {
     match operator {
         Operator::Liek => left == right,
         Operator::NopeLiek => left != right,

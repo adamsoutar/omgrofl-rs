@@ -15,6 +15,16 @@ impl Variables {
         } else { 0 }
     }
 
+    pub fn inc (&mut self, key: usize) {
+        let val = self.get(key);
+        self.set(key, val + 1);
+    }
+
+    pub fn dec (&mut self, key: usize) {
+        let val = self.get(key);
+        self.set(key, val - 1);
+    }
+
     pub fn print (&self) {
         for (key, val) in &self.vars {
             println!("Var #{} - {}", key, val);
