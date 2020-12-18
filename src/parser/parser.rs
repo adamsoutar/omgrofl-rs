@@ -133,12 +133,31 @@ impl Parser {
     }
 
     fn read_variable_definition (&mut self, var_id: usize) -> ASTNode {
-        self.expect_keyword("iz");
-        let val = self.read_value_atom();
-        ASTNode::VariableDeclaration(ASTVariableDeclaration {
-            var_id,
-            value: Box::new(val)
-        })
+        let tk = self.source.read();
+        let next_kw = match tk {
+            Token::Keyword(kw) => kw,
+            _ => {
+                self.croak("Expected \"to\" or \"iz\" keywords but got a different token.".to_string());
+                unreachable!();
+            }
+        };
+
+        if next_kw == "iz" {
+            let val = self.read_value_atom();
+            ASTNode::VariableDeclaration(ASTVariableDeclaration {
+                var_id,
+                value: Box::new(val)
+            })
+        } else if next_kw == "to" {
+            self.expect_keyword("/dev/null");
+            ASTNode::VariableDeclaration(ASTVariableDeclaration {
+                var_id,
+                value: Box::new(ASTNode::Number(0))
+            })
+        } else {
+            self.croak(format!("Expected \"to\" or \"iz\" keywords but got \"{}\"", next_kw));
+            unreachable!();
+        }
     }
 
     fn read_value_atom (&mut self) -> ASTNode {

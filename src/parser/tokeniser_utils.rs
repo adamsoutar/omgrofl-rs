@@ -6,11 +6,11 @@ pub enum Token {
     Variable(usize) // Variables store how many o's were used in the lol
 }
 
-pub static KEYWORDS: [&str; 19] = [
+pub static KEYWORDS: [&str; 20] = [
     "wtf", "brb", "rofl", "lmao", "roflmao",
     "iz", "liek", "uber", "nope", "rtfm", "tldr",
     "w00t", "stfw", "stfu", "n00b", "l33t", "haxxor",
-    "afk", "/dev/null"
+    "afk", "/dev/null", "to"
 ];
 pub static NUMBER_CHARS: [char; 10] = [
     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
