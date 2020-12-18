@@ -19,6 +19,13 @@ impl Parser {
                 let kw = keyword.clone();
                 self.read_keyword(&kw)
             },
+            Token::Number(n) => {
+                if *n == 4 {
+                    self.read_for_loop()
+                } else {
+                    panic!("Unexpected non-4 number: {}", n);
+                }
+            }
             _ => panic!("Unexpected token: {}", stringify_token(tk))
         }
     }
@@ -37,15 +44,50 @@ impl Parser {
                 )
             },
             "brb" => ASTNode::ArglessStatement(Statement::Brb),
-            "rofl" => ASTNode::StatementWithArg(ASTStatementWithArg {
-                statement: Statement::Rofl,
-                arg: Box::new(self.read_value_atom())
-            }),
-            "lmao" => ASTNode::StatementWithArg(ASTStatementWithArg {
-                statement: Statement::Lmao,
-                arg: Box::new(self.read_value_atom())
-            }),
+            "rtfm" => ASTNode::ArglessStatement(Statement::Rtfm),
+            "tldr" => ASTNode::ArglessStatement(Statement::Tldr),
+            "rofl" => self.stmt_with_value(Statement::Rofl),
+            "lmao" => self.stmt_with_value(Statement::Lmao),
+            "roflmao" => self.stmt_with_value(Statement::Roflmao),
             _ => unimplemented!("Keyword \"{}\"", keyword)
+        }
+    }
+
+    fn stmt_with_value (&mut self, stmt: Statement) -> ASTNode {
+        ASTNode::StatementWithArg(ASTStatementWithArg {
+            statement: stmt,
+            arg: Box::new(self.read_value_atom())
+        })
+    }
+
+    fn read_for_loop (&mut self) -> ASTNode {
+        let var_id = self.expect_variable();
+        self.expect_keyword("iz");
+        let initial_value = Box::new(self.read_value_atom());
+        self.expect_number(2);
+        let target_value = Box::new(self.read_value_atom());
+        ASTNode::ForLoopDeclaration(ASTForLoopDeclaration {
+            var_id,
+            initial_value,
+            target_value
+        })
+    }
+
+    fn expect_number (&mut self, check_n: u8) {
+        match self.source.read() {
+            Token::Number(n) => {
+                if *n != check_n {
+                    panic!("Expected number {} but got number {}", check_n, n);
+                }
+            },
+            _ => panic!("Expected number {} but got a diff. token", check_n)
+        }
+    }
+
+    fn expect_variable (&mut self) -> usize {
+        match self.source.read() {
+            Token::Variable(var_id) => var_id.clone(),
+            _ => panic!("Expected a variable but got a diff. token")
         }
     }
 

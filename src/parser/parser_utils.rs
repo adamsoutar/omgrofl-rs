@@ -20,7 +20,10 @@ pub enum Operator {
 pub enum Statement {
     Brb,
     Rofl,
-    Lmao
+    Lmao,
+    Rtfm,
+    Tldr,
+    Roflmao
 }
 
 pub struct ASTVariableDeclaration {
@@ -41,8 +44,7 @@ pub struct ASTWhileLoopDeclaration {
 pub struct ASTForLoopDeclaration {
     pub var_id: usize,
     pub initial_value: Box<ASTNode>,
-    pub target_value: Box<ASTNode>,
-    pub body: Vec<ASTNode>
+    pub target_value: Box<ASTNode>
 }
 
 pub struct ASTStatementWithArg {

@@ -34,7 +34,6 @@ impl Tokeniser {
                 self.read_keyword(ch)
             };
 
-        self.skip_whitespace();
         self.eof = self.source.eof;
         return token;
     }

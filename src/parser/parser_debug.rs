@@ -44,7 +44,10 @@ fn get_statement_string(stmt: &Statement) -> &str {
     match stmt {
         Statement::Brb => "brb",
         Statement::Rofl => "rofl",
-        Statement::Lmao => "lmao"
+        Statement::Lmao => "lmao",
+        Statement::Rtfm => "rtfm",
+        Statement::Tldr => "tldr",
+        Statement::Roflmao => "roflmao"
      }
 }
 
