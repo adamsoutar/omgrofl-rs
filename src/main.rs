@@ -8,6 +8,7 @@ fn main() {
     let code = "
 4 lol iz 0 2 10
     lool iz lol
+    tldr
     loool iz lol
 brb
 ".to_string();

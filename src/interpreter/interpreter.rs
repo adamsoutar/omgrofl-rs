@@ -64,13 +64,21 @@ impl Interpreter {
         BlockDecision::None
     }
 
+    fn run_argless_statement (&mut self, stmt: &Statement) -> BlockDecision {
+        match stmt {
+            Statement::Tldr => BlockDecision::Break,
+            _ => unimplemented!("Argless statement")
+        }
+    }
+
     fn run_block (&mut self, body: &Vec<ASTNode>) -> BlockDecision {
         for node in body {
             let bd = match node {
                 ASTNode::VariableDeclaration(var_dec) => self.run_variable_declaration(var_dec),
                 ASTNode::IfDeclaration(if_stmt) => self.run_if_statement(if_stmt),
                 ASTNode::ForLoopDeclaration(for_loop) => self.run_for_loop(for_loop),
-                _ => panic!("Unimplemented node")
+                ASTNode::ArglessStatement(stmt) => self.run_argless_statement(stmt),
+                _ => unimplemented!("AST node")
             };
 
             // For example, so we can Break from within an if statement
