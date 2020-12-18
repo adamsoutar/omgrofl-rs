@@ -4,7 +4,7 @@ pub enum ASTNode {
     VariableDeclaration(ASTVariableDeclaration),
     // TODO: I think this should be IfStatement, not Declaration
     IfDeclaration(ASTIfDeclaration),
-    WhileLoopDeclaration(ASTWhileLoopDeclaration),
+    InfiniteLoopDeclaration(Vec<ASTNode>),
     ForLoopDeclaration(ASTForLoopDeclaration),
     ArglessStatement(Statement),
     StatementWithArg(ASTStatementWithArg)
@@ -21,7 +21,6 @@ pub enum Operator {
 pub enum Statement {
     Rofl,
     Lmao,
-    Rtfm,
     Tldr,
     Roflmao
 }
@@ -35,10 +34,6 @@ pub struct ASTIfDeclaration {
     pub left: Box<ASTNode>,
     pub operator: Operator,
     pub right: Box<ASTNode>,
-    pub body: Vec<ASTNode>
-}
-
-pub struct ASTWhileLoopDeclaration {
     pub body: Vec<ASTNode>
 }
 

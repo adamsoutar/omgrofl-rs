@@ -38,6 +38,10 @@ fn print_ast_node (node: &ASTNode, indent: usize) {
             print_at_depth("Body:".to_string(), indent + 1);
             print_block(&for_loop.body, indent + 2);
         },
+        ASTNode::InfiniteLoopDeclaration(body) => {
+            print_at_depth("Infinite loop:".to_string(), indent);
+            print_block(body, indent + 1)
+        }
         _ => panic!("Unimplemented ASTNode in printer")
     }
 }
@@ -51,11 +55,10 @@ fn get_operator_string(op: &Operator) -> &str {
     }
 }
 
-fn get_statement_string(stmt: &Statement) -> &str {
+pub fn get_statement_string(stmt: &Statement) -> &str {
     match stmt {
         Statement::Rofl => "rofl",
         Statement::Lmao => "lmao",
-        Statement::Rtfm => "rtfm",
         Statement::Tldr => "tldr",
         Statement::Roflmao => "roflmao"
      }

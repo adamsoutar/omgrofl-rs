@@ -1,4 +1,5 @@
 use crate::parser::parser_utils::*;
+use crate::parser::parser_debug::*;
 use crate::interpreter::variables::Variables;
 use crate::interpreter::interpreter_utils::*;
 
@@ -50,9 +51,7 @@ impl Interpreter {
         while self.vars.get(counter) != target_val {
             let bd = self.run_block(&for_loop.body);
 
-            if bd == BlockDecision::Break {
-                break
-            }
+            if bd == BlockDecision::Break { break }
 
             if increasing {
                 self.vars.inc(counter);
@@ -64,10 +63,19 @@ impl Interpreter {
         BlockDecision::None
     }
 
+    fn run_infinite_loop (&mut self, body: &Vec<ASTNode>) -> BlockDecision {
+        loop {
+            let bd = self.run_block(body);
+            if bd == BlockDecision::Break { break }
+        }
+
+        BlockDecision::None
+    }
+
     fn run_argless_statement (&mut self, stmt: &Statement) -> BlockDecision {
         match stmt {
             Statement::Tldr => BlockDecision::Break,
-            _ => unimplemented!("Argless statement")
+            _ => unimplemented!("Argless statement {}", get_statement_string(stmt))
         }
     }
 
@@ -97,7 +105,7 @@ impl Interpreter {
                 self.vars.dec(arg_as_var_id);
                 BlockDecision::None
             }
-            _ => unimplemented!("Statement with arg")
+            _ => unimplemented!("Statement with arg {}", get_statement_string(&stmt_with_arg.statement))
         }
     }
 
@@ -109,6 +117,7 @@ impl Interpreter {
                 ASTNode::ForLoopDeclaration(for_loop) => self.run_for_loop(for_loop),
                 ASTNode::ArglessStatement(stmt) => self.run_argless_statement(stmt),
                 ASTNode::StatementWithArg(stmt_with_arg) => self.run_statement_with_arg(stmt_with_arg),
+                ASTNode::InfiniteLoopDeclaration(body) => self.run_infinite_loop(body),
                 _ => unimplemented!("AST node")
             };
 

@@ -52,7 +52,10 @@ impl Parser {
                     }
                 )
             },
-            "rtfm" => ASTNode::ArglessStatement(Statement::Rtfm),
+            "rtfm" => {
+                let body = self.read_block();
+                ASTNode::InfiniteLoopDeclaration(body)
+            },
             "tldr" => ASTNode::ArglessStatement(Statement::Tldr),
             "rofl" => self.stmt_with_value(Statement::Rofl),
             "lmao" => self.stmt_with_value(Statement::Lmao),
