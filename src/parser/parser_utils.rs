@@ -2,6 +2,7 @@ pub enum ASTNode {
     Variable(usize),
     Number(u8),
     VariableDeclaration(ASTVariableDeclaration),
+    // TODO: I think this should be IfStatement, not Declaration
     IfDeclaration(ASTIfDeclaration),
     WhileLoopDeclaration(ASTWhileLoopDeclaration),
     ForLoopDeclaration(ASTForLoopDeclaration),

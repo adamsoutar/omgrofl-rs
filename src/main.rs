@@ -6,8 +6,8 @@ use crate::interpreter::interpreter::Interpreter;
 
 fn main() {
     let code = "
-lol iz 1
-wtf lol iz liek 1
+lol iz 2
+wtf lol iz uber 1
     lool iz 2
 brb
 ".to_string();
