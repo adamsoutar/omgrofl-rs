@@ -1,0 +1,58 @@
+use crate::parser::parser_utils::*;
+
+pub fn print_ast (ast: &Vec<ASTNode>) {
+    for node in ast {
+        print_ast_node(node, 0);
+    }
+}
+
+fn print_ast_node (node: &ASTNode, indent: usize) {
+    match node {
+        ASTNode::Variable(var_id) => print_at_depth(format!("Variable: #{}", var_id), indent),
+        ASTNode::Number(n) => print_at_depth(format!("Number: {}", n), indent),
+        ASTNode::VariableDeclaration(var_dec) => {
+            print_at_depth(format!("Variable #{} declared as:", var_dec.var_id), indent);
+            print_ast_node(&var_dec.value, indent + 1);
+        },
+        ASTNode::ArglessStatement(stmt) => print_at_depth(format!("Argless statement: {}", get_statement_string(stmt)), indent),
+        ASTNode::StatementWithArg(arg_stmt) => {
+            print_at_depth(format!("Statement with arg: {}", get_statement_string(&arg_stmt.statement)), indent);
+            print_ast_node(&arg_stmt.arg, indent + 1);
+        },
+        ASTNode::IfDeclaration(if_stmt) => {
+            print_at_depth("If declaration:".to_string(), indent);
+            print_at_depth("Left:".to_string(), indent + 1);
+            print_ast_node(&if_stmt.left, indent + 2);
+            print_at_depth(format!("Operator: {}", get_operator_string(&if_stmt.operator)), indent + 1);
+            print_at_depth("Right:".to_string(), indent + 1);
+            print_ast_node(&if_stmt.right, indent + 2);
+        },
+        _ => panic!("Unimplemented ASTNode in printer")
+    }
+}
+
+fn get_operator_string(op: &Operator) -> &str {
+    match op {
+        Operator::Uber => "uber",
+        Operator::NopeUber => "nope uber",
+        Operator::Liek => "liek",
+        Operator::NopeLiek => "nope liek"
+    }
+}
+
+fn get_statement_string(stmt: &Statement) -> &str {
+    match stmt {
+        Statement::Brb => "brb",
+        Statement::Rofl => "rofl",
+        Statement::Lmao => "lmao"
+     }
+}
+
+fn print_at_depth (s: String, indent: usize) {
+    let mut str = String::from("");
+    for _ in 0..indent * 4 {
+        str += &String::from(" ");
+    }
+    str += &s;
+    println!("{}", str);
+}
