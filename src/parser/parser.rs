@@ -37,9 +37,10 @@ impl Parser {
                 self.expect_keyword("iz");
                 let operator = self.read_operator();
                 let right = Box::new(self.read_value_atom());
+                let body = self.read_block();
                 ASTNode::IfDeclaration(
                     ASTIfDeclaration {
-                        left, operator, right
+                        left, operator, right, body
                     }
                 )
             },
@@ -66,10 +67,12 @@ impl Parser {
         let initial_value = Box::new(self.read_value_atom());
         self.expect_number(2);
         let target_value = Box::new(self.read_value_atom());
+        let body = self.read_block();
         ASTNode::ForLoopDeclaration(ASTForLoopDeclaration {
             var_id,
             initial_value,
-            target_value
+            target_value,
+            body
         })
     }
 
@@ -144,14 +147,21 @@ impl Parser {
         }
     }
 
-    pub fn generate_ast (&mut self) -> Vec<ASTNode> {
-        let mut ast = vec![];
+    pub fn read_block (&mut self) -> Vec<ASTNode> {
+        let mut block = vec![];
 
         while !self.source.eof {
-            ast.push(self.read_next())
+            if let Token::Keyword(kw) = self.source.peek() {
+                if kw == "brb" {
+                    self.source.read();
+                    break;
+                }
+            }
+
+            block.push(self.read_next());
         }
 
-        ast
+        block
     }
 
     pub fn new (source: String) -> Parser {

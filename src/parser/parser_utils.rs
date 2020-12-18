@@ -34,7 +34,8 @@ pub struct ASTVariableDeclaration {
 pub struct ASTIfDeclaration {
     pub left: Box<ASTNode>,
     pub operator: Operator,
-    pub right: Box<ASTNode>
+    pub right: Box<ASTNode>,
+    pub body: Vec<ASTNode>
 }
 
 pub struct ASTWhileLoopDeclaration {
@@ -44,7 +45,8 @@ pub struct ASTWhileLoopDeclaration {
 pub struct ASTForLoopDeclaration {
     pub var_id: usize,
     pub initial_value: Box<ASTNode>,
-    pub target_value: Box<ASTNode>
+    pub target_value: Box<ASTNode>,
+    pub body: Vec<ASTNode>
 }
 
 pub struct ASTStatementWithArg {

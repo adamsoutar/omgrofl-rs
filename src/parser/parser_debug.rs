@@ -1,8 +1,8 @@
 use crate::parser::parser_utils::*;
 
-pub fn print_ast (ast: &Vec<ASTNode>) {
+pub fn print_block (ast: &Vec<ASTNode>, indent: usize) {
     for node in ast {
-        print_ast_node(node, 0);
+        print_ast_node(node, indent);
     }
 }
 
@@ -26,6 +26,15 @@ fn print_ast_node (node: &ASTNode, indent: usize) {
             print_at_depth(format!("Operator: {}", get_operator_string(&if_stmt.operator)), indent + 1);
             print_at_depth("Right:".to_string(), indent + 1);
             print_ast_node(&if_stmt.right, indent + 2);
+        },
+        ASTNode::ForLoopDeclaration(for_loop) => {
+            print_at_depth(format!("For loop, counter: Var #{}", for_loop.var_id), indent);
+            print_at_depth("From:".to_string(), indent + 1);
+            print_ast_node(&for_loop.initial_value, indent + 2);
+            print_at_depth("To:".to_string(), indent + 1);
+            print_ast_node(&for_loop.target_value, indent + 2);
+            print_at_depth("Body:".to_string(), indent + 1);
+            print_block(&for_loop.body, indent + 2);
         },
         _ => panic!("Unimplemented ASTNode in printer")
     }

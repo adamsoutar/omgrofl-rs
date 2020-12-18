@@ -38,6 +38,7 @@ impl Tokeniser {
         self.skip_whitespace();
         self.eof = self.source.eof;
         // print_token(&token);
+        // println!("eof: {}", self.source.eof);
         return token;
     }
 

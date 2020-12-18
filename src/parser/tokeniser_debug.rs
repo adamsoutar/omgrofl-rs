@@ -1,5 +1,6 @@
 use crate::parser::tokeniser_utils::*;
 
+#[allow(dead_code)]
 pub fn print_token (tk: &Token) {
     match tk {
         Token::NullToken => println!("Token::NullToken (placeholder)"),
