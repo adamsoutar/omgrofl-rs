@@ -1,5 +1,6 @@
 use crate::parser::char_stream::CharStream;
 use crate::parser::tokeniser_utils::*;
+use crate::parser::tokeniser_debug::*;
 
 pub struct Tokeniser {
     pub source: CharStream,
@@ -34,7 +35,9 @@ impl Tokeniser {
                 self.read_keyword(ch)
             };
 
+        self.skip_whitespace();
         self.eof = self.source.eof;
+        // print_token(&token);
         return token;
     }
 
