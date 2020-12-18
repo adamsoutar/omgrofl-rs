@@ -1,3 +1,4 @@
+use std::io::{stdout, Write};
 use crate::parser::parser_utils::*;
 use crate::parser::parser_debug::*;
 use crate::interpreter::variables::Variables;
@@ -104,7 +105,13 @@ impl Interpreter {
                 want_a_var("roflmao");
                 self.vars.dec(arg_as_var_id);
                 BlockDecision::None
-            }
+            },
+            Statement::Rofl => {
+                stdout()
+                    .write(&[arg_val])
+                    .expect("Can't lock standard out");
+                BlockDecision::None
+            },
             _ => unimplemented!("Statement with arg {}", get_statement_string(&stmt_with_arg.statement))
         }
     }
