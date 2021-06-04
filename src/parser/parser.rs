@@ -57,6 +57,7 @@ impl Parser {
                 ASTNode::InfiniteLoopDeclaration(body)
             },
             "tldr" => ASTNode::ArglessStatement(Statement::Tldr),
+            "stfu" => ASTNode::ArglessStatement(Statement::Stfu),
             "rofl" => self.stmt_with_value(Statement::Rofl),
             "lmao" => self.stmt_with_value(Statement::Lmao),
             "roflmao" => self.stmt_with_value(Statement::Roflmao),

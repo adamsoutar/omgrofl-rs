@@ -63,7 +63,8 @@ pub fn get_statement_string(stmt: &Statement) -> &str {
         Statement::Roflmao => "roflmao",
         Statement::N00b => "n00b",
         Statement::L33t => "l33t",
-        Statement::Haxor => "haxor"
+        Statement::Haxor => "haxor",
+        Statement::Stfu => "stfu",
      }
 }
 

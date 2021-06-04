@@ -51,6 +51,7 @@ impl Interpreter {
             let bd = self.run_block(&for_loop.body);
 
             if bd == BlockDecision::Break { break }
+            if bd == BlockDecision::Exit { return bd }
 
             if increasing {
                 self.vars.inc(counter);
@@ -74,7 +75,10 @@ impl Interpreter {
     fn run_infinite_loop (&mut self, body: &Vec<ASTNode>) -> BlockDecision {
         loop {
             let bd = self.run_block(body);
+            // This ends here
             if bd == BlockDecision::Break { break }
+            // This one is propagated
+            if bd == BlockDecision::Exit { return bd }
         }
 
         BlockDecision::None
@@ -83,6 +87,7 @@ impl Interpreter {
     fn run_argless_statement (&mut self, stmt: &Statement) -> BlockDecision {
         match stmt {
             Statement::Tldr => BlockDecision::Break,
+            Statement::Stfu => BlockDecision::Exit,
             _ => unimplemented!("Argless statement {}", get_statement_string(stmt))
         }
     }

@@ -25,7 +25,8 @@ pub enum Statement {
     Roflmao,
     N00b,
     L33t,
-    Haxor
+    Haxor,
+    Stfu
 }
 
 pub struct ASTVariableDeclaration {
