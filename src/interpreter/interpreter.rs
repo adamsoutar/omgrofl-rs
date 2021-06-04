@@ -38,8 +38,6 @@ impl Interpreter {
         }
     }
 
-    // TODO: Loop should run once if init and target are the same
-    // TODO: Check if it's inclusive or exclusive
     fn run_for_loop (&mut self, for_loop: &ASTForLoopDeclaration) -> BlockDecision {
         let counter = for_loop.var_id;
 
@@ -49,7 +47,7 @@ impl Interpreter {
 
         self.vars.set(counter, init_val);
 
-        while self.vars.get(counter) != target_val {
+        while self.check_loop_var(counter, target_val, increasing) {
             let bd = self.run_block(&for_loop.body);
 
             if bd == BlockDecision::Break { break }
@@ -62,6 +60,15 @@ impl Interpreter {
         }
 
         BlockDecision::None
+    }
+
+    fn check_loop_var (&self, counter: usize, target_val: u8, increasing: bool) -> bool {
+        let val = self.vars.get(counter);
+        if increasing {
+            val <= target_val
+        } else {
+            val >= target_val
+        }
     }
 
     fn run_infinite_loop (&mut self, body: &Vec<ASTNode>) -> BlockDecision {
