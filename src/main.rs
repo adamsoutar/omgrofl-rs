@@ -6,6 +6,8 @@ use crate::interpreter::interpreter::Interpreter;
 
 fn main() {
     let code = "
+    w00t An Omgrofl FizzBuzz program by Adam Soutar
+    w00t The only one in existence? Maybe?
     4 lol iz 1 2 100
       lool iz lol
       loool iz 0

@@ -10,6 +10,12 @@ impl CharStream {
     pub fn peek (&self) -> char {
         self.source[self.index]
     }
+    pub fn peek_further (&self, extra: usize) -> char {
+        if self.index + extra >= self.source.len() {
+            return 0 as char
+        }
+        self.source[self.index + extra]
+    }
 
     pub fn read (&mut self) -> char {
         let c = self.source[self.index];

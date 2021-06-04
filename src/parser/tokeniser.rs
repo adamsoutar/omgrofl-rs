@@ -25,7 +25,7 @@ impl Tokeniser {
     }
 
     fn read_next (&mut self) -> Token {
-        self.skip_whitespace();
+        self.skip_whitespace_and_comments();
 
         let ch = self.source.read();
 
@@ -41,7 +41,7 @@ impl Tokeniser {
                 self.read_keyword(ch)
             };
 
-        self.skip_whitespace();
+        self.skip_whitespace_and_comments();
         self.eof = self.source.eof;
         // print_token(&token);
         // println!("eof: {}", self.source.eof);
@@ -51,6 +51,18 @@ impl Tokeniser {
     fn skip_whitespace (&mut self) {
         while !self.source.eof && is_whitespace(self.source.peek()) {
             self.source.read();
+        }
+    }
+
+    fn skip_whitespace_and_comments (&mut self) {
+        self.skip_whitespace();
+        while !self.source.eof && self.source.peek() == 'w' && self.source.peek_further(1) == '0' {
+            // We've hit a comment
+            while !self.source.eof && self.source.peek() != '\n' {
+                self.source.read();
+            }
+            self.source.read();
+            self.skip_whitespace();
         }
     }
 
