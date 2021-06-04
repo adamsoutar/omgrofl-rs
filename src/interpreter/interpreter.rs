@@ -113,6 +113,20 @@ impl Interpreter {
                 self.vars.dec(arg_as_var_id);
                 BlockDecision::None
             },
+            Statement::N00b => {
+                self.vars.staque_push(arg_val);
+                BlockDecision::None
+            },
+            Statement::L33t => {
+                want_a_var("l33t");
+                self.vars.staque_pop_to_var(arg_as_var_id);
+                BlockDecision::None
+            },
+            Statement::Haxor => {
+                want_a_var("haxor");
+                self.vars.staque_dequeue_to_var(arg_as_var_id);
+                BlockDecision::None
+            },
             Statement::Rofl => {
                 stdout()
                     .write(&[arg_val])

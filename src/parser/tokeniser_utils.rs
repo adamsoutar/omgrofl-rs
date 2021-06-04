@@ -9,7 +9,7 @@ pub enum Token {
 pub static KEYWORDS: [&str; 20] = [
     "wtf", "brb", "rofl", "lmao", "roflmao",
     "iz", "liek", "uber", "nope", "rtfm", "tldr",
-    "w00t", "stfw", "stfu", "n00b", "l33t", "haxxor",
+    "w00t", "stfw", "stfu", "n00b", "l33t", "haxor",
     "afk", "/dev/null", "to"
 ];
 pub static NUMBER_CHARS: [char; 10] = [

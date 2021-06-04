@@ -60,7 +60,10 @@ pub fn get_statement_string(stmt: &Statement) -> &str {
         Statement::Rofl => "rofl",
         Statement::Lmao => "lmao",
         Statement::Tldr => "tldr",
-        Statement::Roflmao => "roflmao"
+        Statement::Roflmao => "roflmao",
+        Statement::N00b => "n00b",
+        Statement::L33t => "l33t",
+        Statement::Haxor => "haxor"
      }
 }
 
