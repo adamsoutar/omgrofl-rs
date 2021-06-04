@@ -42,7 +42,6 @@ fn print_ast_node (node: &ASTNode, indent: usize) {
             print_at_depth("Infinite loop:".to_string(), indent);
             print_block(body, indent + 1)
         }
-        _ => panic!("Unimplemented ASTNode in printer")
     }
 }
 
