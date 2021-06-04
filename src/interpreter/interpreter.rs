@@ -1,3 +1,5 @@
+use std::thread;
+use std::time::Duration;
 use std::io::{stdout, Write};
 use crate::parser::parser_utils::*;
 use crate::parser::parser_debug::*;
@@ -130,6 +132,10 @@ impl Interpreter {
             Statement::Haxor => {
                 want_a_var("haxor");
                 self.vars.staque_dequeue_to_var(arg_as_var_id);
+                BlockDecision::None
+            },
+            Statement::Afk => {
+                thread::sleep(Duration::from_millis(arg_val as u64));
                 BlockDecision::None
             },
             Statement::Rofl => {

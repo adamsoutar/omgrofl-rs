@@ -65,6 +65,7 @@ pub fn get_statement_string(stmt: &Statement) -> &str {
         Statement::L33t => "l33t",
         Statement::Haxor => "haxor",
         Statement::Stfu => "stfu",
+        Statement::Afk => "afk"
      }
 }
 

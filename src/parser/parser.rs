@@ -64,6 +64,7 @@ impl Parser {
             "n00b" => self.stmt_with_value(Statement::N00b),
             "l33t" => self.stmt_with_value(Statement::L33t),
             "haxor" => self.stmt_with_value(Statement::Haxor),
+            "afk" => self.stmt_with_value(Statement::Afk),
             _ => unimplemented!("Keyword \"{}\"", keyword)
         }
     }

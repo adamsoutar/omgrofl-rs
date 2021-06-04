@@ -6,13 +6,19 @@ use crate::interpreter::interpreter::Interpreter;
 
 fn main() {
     let code = "
-    rtfm
-        rofl 65
-        4 lol iz 1 2 1
-            stfu
-        brb
-        rofl 66
-    brb
+    rofl 65
+    rofl 10
+    lol iz 255
+    afk lol
+    afk 255
+    afk 255
+    afk 255
+    afk 255
+    afk 255
+    afk 255
+    afk 255
+    rofl 66
+    rofl 10
 ".to_string();
 
     let mut parser = Parser::new(code);
